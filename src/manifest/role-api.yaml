@@ -1,0 +1,49 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: api
+  name: api-read
+rules:
+# api-dev user (View access to Web resources, Edit access to API resources)
+- apiGroups: ["", "apps"] # "" indicates the core API group
+  resources: ["*"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: api
+  name: api-edit
+rules:
+# api-dev user (View access to Web resources, Edit access to API resources)
+- apiGroups: ["", "apps"] # "" indicates the core API group
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: api-api-edit-binding
+  namespace: api
+subjects:
+- kind: User
+  name: apidev@msftopenhack7166ops.onmicrosoft.com #api-dev
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: api-edit
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: api-web-read-binding
+  namespace: api
+subjects:
+- kind: User
+  name: webdev@msftopenhack7166ops.onmicrosoft.com #api-dev
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: api-read
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer
+  namespace: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripviewer
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+    spec:
+      containers:
+      - name: tripviewer
+        image: registryayb5471.azurecr.io/tripviewer:1.0
+        env:
+        - name: TRIPS_API_ENDPOINT
+          value: "http://trips.api"
+        - name: USERPROFILE_API_ENDPOINT
+          value: "http://userprofile.api"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer
+  namespace: web
+spec:
+  # type: LoadBalancer
+  selector:
+    app: tripviewer
+  ports:
+  - port: 80 
+    targetPort: 80

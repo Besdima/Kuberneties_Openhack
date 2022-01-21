@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userprofile
+  namespace: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: userprofile
+  template:
+    metadata:
+      labels:
+        app: userprofile
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+    spec:
+      containers:
+      - name: userprofile
+        image: registryayb5471.azurecr.io/userprofile:1.0
+        env:
+        - name: CONFIG_FILES_PATH
+          value: "/mnt/secrets-store"
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name:  sql-credentials
+              key:  username
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  sql-credentials
+              key:  password
+        - name: SQL_SERVER
+          value: "sqlserverayb5471.database.windows.net"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvname-user-msi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userprofile
+  namespace: api
+spec:
+  selector:
+    app: userprofile
+  ports:
+  - port: 80
+    targetPort: 80

@@ -1,0 +1,20 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: networkpolicy-egress-api
+  namespace: api
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - namespaceSelector: {web}
+      podSelector:
+        matchLabels:
+          app: tripviewer
+    - namespaceSelector: {ingress}
+      podSelector: 
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+  - to:
+    - ipBlock:
+        cidr: 10.2.0.227/32
