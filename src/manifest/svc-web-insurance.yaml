@@ -19,7 +19,7 @@ spec:
         prometheus.io/port: "8081"
     spec:
       containers:
-      - image: registryayb5471.azurecr.io/insurance:1.0
+      - image: dhacropenhack.azurecr.io/insurance:1.0
         imagePullPolicy: Always
         name: insurance
         ports:

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-database
+data:
+  SQL_SERVER: "dh-sql-openhack.database.windows.net"
+  ui_properties_file_name: "dh-sql-openhack.database.windows.net"

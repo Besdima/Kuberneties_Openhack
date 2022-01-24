@@ -1,17 +1,17 @@
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: networkpolicy-ingress-api
-  namespace: api
-spec:
-  podSelector: {}
-  ingress:
-  - from:
-    - namespaceSelector: {web}
-      podSelector:
-        matchLabels:
-          app: tripviewer
-    - namespaceSelector: {ingress}
-      podSelector: 
-        matchLabels:
-          app.kubernetes.io/name: ingress-nginx
+# kind: NetworkPolicy
+# apiVersion: networking.k8s.io/v1
+# metadata:
+#   name: networkpolicy-ingress-api
+#   namespace: api
+# spec:
+#   podSelector: {}
+#   ingress:
+#   - from:
+#     - namespaceSelector: {web}
+#       podSelector:
+#         matchLabels:
+#           app: tripviewer
+#     - namespaceSelector: {ingress}
+#       podSelector: 
+#         matchLabels:
+#           app.kubernetes.io/name: ingress-nginx

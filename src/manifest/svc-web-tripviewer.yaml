@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: tripviewer
-        image: registryayb5471.azurecr.io/tripviewer:1.0
+        image: dhacropenhack.azurecr.io/tripviewer:1.0
         env:
         - name: TRIPS_API_ENDPOINT
           value: "http://trips.api"
