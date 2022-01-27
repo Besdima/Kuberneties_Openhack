@@ -33,7 +33,10 @@ spec:
               name:  sql-credentials
               key:  password
         - name: SQL_SERVER
-          value: "sqlserverayb5471.database.windows.net"
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap-database
+              key: SQL_SERVER
         - name: OPENAPI_DOCS_URI
           value: "http://trips.api"
         resources:
