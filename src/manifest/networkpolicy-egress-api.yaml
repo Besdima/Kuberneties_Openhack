@@ -1,20 +1,30 @@
-# kind: NetworkPolicy
-# apiVersion: networking.k8s.io/v1
-# metadata:
-#   name: networkpolicy-egress-api
-#   namespace: api
-# spec:
-#   podSelector: {}
-#   egress:
-#   - to:
-#     - namespaceSelector: {web}
-#       podSelector:
-#         matchLabels:
-#           app: tripviewer
-#     - namespaceSelector: {ingress}
-#       podSelector: 
-#         matchLabels:
-#           app.kubernetes.io/name: ingress-nginx
-#   - to:
-#     - ipBlock:
-#         cidr: 10.2.0.227/32
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: networkpolicy-egress-api
+  namespace: api
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - namespaceSelector: {web}
+      podSelector:
+        matchLabels:
+          app: tripviewer
+    - namespaceSelector: {ingress}
+      podSelector: 
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+  - to: # To main Subnets
+    - ipBlock:
+        cidr: 10.0.2.0/24
+    - ipBlock:
+        cidr: 10.1.2.0/24
+  - to: # To DNS Server
+    - ipBlock:
+        cidr: 10.0.4.0/24
+    ports:
+    - protocol: UDP
+      port:  53
+    - protocol: TCP
+      port:  53
