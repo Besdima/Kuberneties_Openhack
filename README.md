@@ -1,4 +1,3 @@
-# Containers 2.0 Openhack
 
 <!-- 
 Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
